@@ -1,3 +1,6 @@
-
-"""CREATE (doctor:Doctor {name: Nombre, speciality:Especialidad, contact:Numero});"""
-"""CREATE (patient:Doctor {name: Nombre, contact:Numero});"""
+def ingersarDoctor(name, speciality ,contact):
+    query = "CREATE (doctor:Doctor {name:" +name+", speciality:"+speciality+", contact:"contact"});"
+    db.query(query)
+def ingresarPaciente(nombre, numero)
+    query = "CREATE (patinet:Patient {name:" +name+", contact:"contact"});"
+    db.query(query)
