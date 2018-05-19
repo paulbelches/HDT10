@@ -22,7 +22,7 @@ while menu:
     print "4.Consultar cuales doctores por especialidad. \n"
     print "5.Ingresar que una persona conoce a otra persona. \n"
     print "6.Salir"
-     op = int(raw_input("Ingrese una opcion"))
+    op = int(raw_input("Ingrese una opcion"))
     if op == 1:
         nombre = raw_input("Ingresar nombre del doctor")
         contacto = raw_input("Ingresar el contacto del doctor")
