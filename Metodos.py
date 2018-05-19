@@ -1,11 +1,11 @@
 def ingresarDoctor (nombre, contacto, especialidad,db):
     Doctor = db.nodes.create(name=nombre, contact=contacto, speciality=especialidad)
     Doctor.labels.add("Doctor")
-def ingresarPaciente (nombre,db):
-    Paciente = db.nodes.create(name=nombre, contact=contacto, speciality=especialidad)
+def ingresarPaciente (nombre,contacto,db):
+    Paciente = db.nodes.create(name=nombre, contact=contacto)
     Paciente.labels.add("Patient")
 def ingresarMedicina (nombre,db):
-    Medicina = db.nodes.create(name=nombre, contact=contacto, speciality=especialidad)
+    Medicina = db.nodes.create(name=nombre)
     Medicina.labels.add("Medicine")
 def pacienteVisitaDoctor (nombreDoctor,nombrePaciente,medicina,cantidad,fecha,db):
     q = 'MATCH (u: Doctor) WHERE u.name="'+nombreDoctor+'" RETURN u'
@@ -14,20 +14,28 @@ def pacienteVisitaDoctor (nombreDoctor,nombrePaciente,medicina,cantidad,fecha,db
     resultsP = db.query(q, returns=(client.Node, str, client.Node))
     q = 'MATCH (u: Medicine) WHERE u.name="'+medicina+'" RETURN u'
     resultsM = db.query(q, returns=(client.Node, str, client.Node))
-    resultsP.relationships.create("Visits", resultsD, date=fecha)
-    resultsD.relationships.create("Prescribes", medicina,amount=cantidad)
-    resultsP.relationships.create("Takes", medicina)
+    if((len(resultsD)>0) and (len(resultsP)>0) and (len(resultsM)>0)):
+        resultsP.relationships.create("Visits", resultsD, date=fecha)
+        resultsD.relationships.create("Prescribes", medicina,amount=cantidad)
+        resultsP.relationships.create("Takes", medicina)
+    else:
+       print ("Alguno de los datos ingresados no se encuentra en la base de datos")
 def doctorEspecialidad (especialidad,db):
     q = 'MATCH (u: Doctor) WHERE u.speciality="'+especialidad+'" RETURN u'
     resultsD = db.query(q, returns=(client.Node, str, client.Node))
+    if(not(resultsD)):
+        print ("La especialidad que busca no esta ingresada en la base de datos")
+    else:
+        for r in resultsD:
+            print r[0][name]
 def conoceA (nombre1,nombre2,db):
     q = 'MATCH (u: Patient) WHERE u.name="'+nombre1+'" RETURN u'
-    resul1 = db.query(q, returns=(client.Node, str, client.Node))
+    result1 = db.query(q, returns=(client.Node, str, client.Node))
     if (not(result1)):
         q = 'MATCH (u: Doctor) WHERE u.name="'+nombre1+'" RETURN u'
         resul1 = db.query(q, returns=(client.Node, str, client.Node))
     q = 'MATCH (u: Patient) WHERE u.name="'+nombre2+'" RETURN u'
-    resul2 = db.query(q, returns=(client.Node, str, client.Node))
+    result2 = db.query(q, returns=(client.Node, str, client.Node))
     if (not(result2)):
         q = 'MATCH (u: Doctor) WHERE u.name="'+nombre1+'" RETURN u'
         resul2 = db.query(q, returns=(client.Node, str, client.Node))
