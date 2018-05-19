@@ -48,28 +48,16 @@ def recomedacion(paciente, especialidad):
         #Se agregan valores a los doctores que estan
         for element in doctors:
             doctores[element]=doctores[element]+1
-    #Mostrar la lista de doctores en orden decendente
-    for key, value in sorted(doctores.iteritems(), key=lambda (k,v): (v,k), reverse=True):
-        print "%s: %s" % (key, value)
-def dobleRecomedacion(paciente, especialidad):
-    #q = 'MATCH (u: Patient) WHERE u.name="'+paciente+'" RETURN u'
-    q = 'MATCH (u:Pacient)-[r:Knows]->(m:Pacient) WHERE u.name="'+paciente+'" RETURN u
-    resultsP = db.query(q, returns=(client.Node, str, client.Node))
-    q = 'MATCH (u: Doctor) WHERE u.especialidad="'+especialidad+'" RETURN u'
-    resultsD = db.query(q, returns=(client.Node, str, client.Node))
-    doctores={} #Se crea un diccionacio
-    for j in resultsD:
-        doctores[j]=0 #Se agregan todos los doctores con la especialidad
-    for j in resultsP:
-        q = 'MATCH (u:Pacient)-[r:Knows]->(m:Pacient) WHERE u.name="'+j+'" RETURN u
+        #Valores de los conocidos de los conocidos
+        q = 'MATCH (u:Pacient)-[r:Knows]->(m:Pacient) WHERE u.name="'+i+'" RETURN u
         resultsP2 = db.query(q, returns=(client.Node, str, client.Node))
-        for i in resultsP2:    
-            q = 'MATCH (u:Pacient)-[r:Visits]->(m:Doctor) WHERE u.name="'+i+'" m.especialidad="'+especialidad+'" RETURN u'
+        for k in resultsP2:    
+            q = 'MATCH (u:Pacient)-[r:Visits]->(m:Doctor) WHERE u.name="'+k+'" m.especialidad="'+especialidad+'" RETURN u'
             doctors = db.query(q, returns=(client.Node))#Se optienen todos los doctores con la especialidad visitados por los pacientes
             #Se agregan valores a los doctores que estan
             for element in doctors:
                 doctores[element]=doctores[element]+1
     #Mostrar la lista de doctores en orden decendente
     for key, value in sorted(doctores.iteritems(), key=lambda (k,v): (v,k), reverse=True):
-        print "%s: %s" % (key, value) 
-  
+        print "%s: %s" % (key, value)
+
