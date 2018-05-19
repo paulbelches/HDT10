@@ -32,4 +32,21 @@ while menu:
         nombre = raw_input("Ingresar nombre del paciente")
         contacto = raw_input("Ingresar el contacto del paciente")
         ingresarPaciente(nombre,contacto,db)
+    elif op == 3:
+        nombreDoctor = raw_input("Ingresar nombre del Doctor")
+        nombrePaciente = raw_input("Ingresar nombre del paciente")
+        medicina = raw_input("Que medicina fue recetada")
+        cantidad = raw_input("Cantidad de medicina recetada")
+        fecha = raw_input("Ingresar fecha de la visita")
+        pacienteVisitaDoctor(nombreDoctor,nombrePaciente,medicina,cantidad,fecha,db)
+    elif op == 4:
+         Especialidad = raw_input("Ingresar la especialidad que desea buscar")
+         doctorEspecialidad(Especialidad,db)
+    elif  op == 5:
+        persona1 = raw_input("Ingresar el nombre de la primera persona")
+        persona2 = raw_input("Ingresar el nombre de la segunda persona")
+        conoceA(persona1,persona2,db)
+    else:
+        menu = False
+
     
