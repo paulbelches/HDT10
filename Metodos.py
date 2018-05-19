@@ -40,13 +40,13 @@ def recomedacion(paciente, especialidad):
     #q = 'MATCH (u: Patient) WHERE u.name="'+paciente+'" RETURN u'
     q = 'MATCH (u:Pacient)-[r:Knows]->(m:Pacient) WHERE u.name="'+paciente+'" RETURN u, type(r),m'
     resultsP = db.query(q, returns=(client.Node, str, client.Node))
-    q = 'MATCH (u: Doctor) WHERE u.especialidad="'+especialidad+'" RETURN u, type(r),m'
+    q = 'MATCH (u: Doctor) WHERE u.speciality="'+especialidad+'" RETURN u, type(r),m'
     resultsD = db.query(q, returns=(client.Node, str, client.Node))
     doctores={} #Se crea un diccionacio
     for j in resultsD:
         doctores[j]=0 #Se agregan todos los doctores con la especialidad
     for i in resultsP:
-        q = 'MATCH (u:Pacient)-[r:Visits]->(m:Doctor) WHERE u.name="'+i+'" m.especialidad="'+especialidad+'" RETURN u, type(r),m'
+        q = 'MATCH (u:Pacient)-[r:Visits]->(m:Doctor) WHERE u.name="'+i+'" m.speciality="'+especialidad+'" RETURN u, type(r),m'
         doctors = db.query(q, returns=(client.Node))#Se optienen todos los doctores con la especialidad visitados por los pacientes
         #Se agregan valores a los doctores que estan
         for element in doctors:
@@ -55,7 +55,7 @@ def recomedacion(paciente, especialidad):
         q = 'MATCH (u:Pacient)-[r:Knows]->(m:Pacient) WHERE u.name="'+i+'" RETURN u, type(r),m'
         resultsP2 = db.query(q, returns=(client.Node, str, client.Node))
         for k in resultsP2:    
-            q = 'MATCH (u:Pacient)-[r:Visits]->(m:Doctor) WHERE u.name="'+k+'" m.especialidad="'+especialidad+'" RETURN u, type(r),m'
+            q = 'MATCH (u:Pacient)-[r:Visits]->(m:Doctor) WHERE u.name="'+k+'" m.speciality="'+especialidad+'" RETURN u, type(r),m'
             doctors = db.query(q, returns=(client.Node))#Se optienen todos los doctores con la especialidad visitados por los pacientes
             #Se agregan valores a los doctores que estan
             for element in doctors:
@@ -66,9 +66,9 @@ def recomedacion(paciente, especialidad):
 
 def recomedacionDoctor(doctor, especialidad):
     #q = 'MATCH (u: Patient) WHERE u.name="'+paciente+'" RETURN u'
-   # q = 'MATCH (u:Doctor)-[r:Knows]->(m:Doctor) WHERE u.name="'+doctor'" RETURN u, type(r),m'
+    q = 'MATCH (u:Doctor)-[r:Knows]->(m:Doctor) WHERE u.name="'+doctor+'" RETURN u, type(r),m'
     resultsP = db.query(q, returns=(client.Node, str, client.Node))
-    q = 'MATCH (u: Doctor) WHERE u.especialidad="'+especialidad+'" RETURN u, type(r),m'
+    q = 'MATCH (u: Doctor) WHERE u.speciality="'+especialidad+'" RETURN u, type(r),m'
     resultsD = db.query(q, returns=(client.Node, str, client.Node))
     doctores={} #Se crea un diccionacio
     for j in resultsD:
@@ -79,7 +79,7 @@ def recomedacionDoctor(doctor, especialidad):
         q = 'MATCH (u:Doctor)-[r:Knows]->(m:Doctor) WHERE u.name="'+doctor'" RETURN u, type(r),m'
         resultsP2 = db.query(q, returns=(client.Node, str, client.Node))
         for k in resultsP2:    
-            q = 'MATCH (u:Pacient)-[r:Visits]->(m:Doctor) WHERE u.name="'+k+'" m.especialidad="'+especialidad+'" RETURN u'
+            q = 'MATCH (u:Pacient)-[r:Visits]->(m:Doctor) WHERE u.name="'+k+'" m.speciality="'+especialidad+'" RETURN u'
             doctors = db.query(q, returns=(client.Node))#Se optienen todos los doctores con la especialidad visitados por los pacientes
             #Se agregan valores a los doctores que estan
             for element in doctors:
